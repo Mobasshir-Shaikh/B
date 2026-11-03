@@ -1,0 +1,162 @@
+﻿R PROGRAMMING PRACTICAL EXAM – SET 6 COMPLETE CODES
+================================
+
+
+QUESTION 1: CREATE AND CLEAN A DATA FRAME
+
+
+Step 1: Create vectors
+
+
+ID <- c(1, 2, 3, 4, 5, 6)
+
+
+Name <- c(“Aarav”, “Diya”, “Kabir”, “Diya”, “Om”, “Aarav”)
+
+
+Score <- c(72, 85, 64, 78, 91, 72)
+
+
+Step 2: Create data frame
+
+
+data <- data.frame(ID, Name, Score)
+
+
+print(“Original Data Frame”) print(data)
+
+
+Step 3: Identify duplicate names
+
+
+print(“Duplicate Names”) duplicated(data$Name)
+
+
+Step 4: Display all rows having duplicate names
+
+
+print(“Rows with Duplicate Names”) data[
+duplicated(dataName)|duplicated(dataName, fromLast = TRUE),]
+
+
+Step 5: Remove duplicate names, keeping first occurrence
+
+
+clean_data <- data[!duplicated(data$Name), ]
+
+
+Step 6: Display cleaned data frame
+
+
+print(“Cleaned Data Frame”) print(clean_data)
+
+
+QUESTION 2: PERFORM OLS REGRESSION AND EXAMINE RESIDUALS
+
+
+Step 1: Create data
+
+
+X <- c(1, 2, 3, 4, 5, 6, 7, 8) Y <- c(3, 5, 8, 9, 12, 13, 16, 18)
+
+
+data <- data.frame(X, Y) print(data)
+
+
+Step 2: Fit simple linear regression model
+
+
+model <- lm(Y ~ X, data = data)
+
+
+print(“Model Summary”) summary(model)
+
+
+Step 3: Calculate fitted values
+
+
+fitted_values <- fitted(model)
+
+
+print(“Fitted Values”) print(fitted_values)
+
+
+Step 4: Calculate residuals
+
+
+res <- residuals(model)
+
+
+print(“Residuals”) print(res)
+
+
+Step 5: Plot residuals against fitted values
+
+
+plot( fitted_values, res, main = “Residuals vs Fitted Values”, xlab =
+“Fitted Values”, ylab = “Residuals”, pch = 19, col = “blue” )
+
+
+Step 6: Add horizontal reference line at zero
+
+
+abline(h = 0, col = “red”, lwd = 2)
+
+
+QUESTION 3: CREATE MULTIPLE BOX PLOTS FOR THREE SUBJECTS
+
+
+Install packages only if they are not already installed
+
+
+if (!requireNamespace(“ggplot2”, quietly = TRUE)) {
+install.packages(“ggplot2”) }
+
+
+if (!requireNamespace(“tidyr”, quietly = TRUE)) {
+install.packages(“tidyr”) }
+
+
+library(ggplot2) library(tidyr)
+
+
+Step 1: Create data in wide format
+
+
+Student <- c(“Ana”, “Bilal”, “Chetna”, “Danish”, “Ekta”)
+
+
+Maths <- c(62, 75, 48, 89, 70)
+
+
+Statistics <- c(68, 79, 52, 91, 73)
+
+
+Computer <- c(71, 82, 55, 94, 76)
+
+
+data <- data.frame( Student, Maths, Statistics, Computer )
+
+
+print(“Wide Format Data”) print(data)
+
+
+Step 2: Reshape wide data into long format
+
+
+long_data <- pivot_longer( data, cols = c(Maths, Statistics, Computer),
+names_to = “Subject”, values_to = “Marks” )
+
+
+print(“Long Format Data”) print(long_data)
+
+
+Step 3: Create comparative box plots
+
+
+ggplot( long_data, aes(x = Subject, y = Marks, fill = Subject) ) +
+geom_boxplot() + labs( title = “Comparison of Marks in Three Subjects”,
+x = “Subjects”, y = “Marks” ) + theme_minimal()
+
+
+END OF PRACTICAL EXAM SET 6
