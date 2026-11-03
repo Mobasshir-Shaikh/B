@@ -1,0 +1,340 @@
+﻿# ==========================================
+# SIMPLE LINEAR REGRESSION
+# MULTIPLE LINEAR REGRESSION
+# ALL GRAPHS USING GGPLOT2
+# ==========================================
+
+
+# Install and load package
+
+
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  install.packages("ggplot2")
+}
+
+
+library(ggplot2)
+
+
+
+
+# ==========================================
+# QUESTION: STUDENT PERFORMANCE PREDICTION
+# ==========================================
+
+
+# Create Dataset
+
+
+Student <- c("A", "B", "C", "D", "E",
+             "F", "G", "H", "I", "J")
+
+
+Hours <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+
+Attendance <- c(50, 55, 60, 65, 70,
+                75, 80, 85, 90, 95)
+
+
+Previous_Marks <- c(40, 45, 50, 55, 60,
+                    65, 70, 75, 80, 85)
+
+
+Final_Marks <- c(35, 40, 45, 52, 58,
+                 65, 70, 78, 85, 92)
+
+
+data <- data.frame(
+  Student, Hours, Attendance,
+  Previous_Marks, Final_Marks
+)
+
+
+print(data)
+
+
+
+
+# ==========================================
+# PART A: SIMPLE LINEAR REGRESSION
+# ==========================================
+
+
+# Fit Simple Linear Regression
+
+
+simple_model <- lm(Final_Marks ~ Hours, data = data)
+
+
+# Model Summary
+
+
+summary(simple_model)
+
+
+# Coefficients
+
+
+coef(simple_model)
+
+
+# Prediction
+
+
+new_student <- data.frame(Hours = 6)
+
+
+predict(simple_model, newdata = new_student)
+
+
+
+
+# ==========================================
+# PART B: MULTIPLE LINEAR REGRESSION
+# ==========================================
+
+
+# Fit Multiple Linear Regression
+
+
+multiple_model <- lm(
+  Final_Marks ~ Hours + Attendance + Previous_Marks,
+  data = data
+)
+
+
+# Model Summary
+
+
+summary(multiple_model)
+
+
+# Regression Coefficients
+
+
+coef(multiple_model)
+
+
+# R-squared
+
+
+summary(multiple_model)$r.squared
+
+
+# Adjusted R-squared
+
+
+summary(multiple_model)$adj.r.squared
+
+
+# ANOVA
+
+
+anova(multiple_model)
+
+
+# Prediction
+
+
+new_data <- data.frame(
+  Hours = 6,
+  Attendance = 80,
+  Previous_Marks = 70
+)
+
+
+predict(multiple_model, newdata = new_data)
+
+
+# Fitted Values
+
+
+fitted(multiple_model)
+
+
+# Residuals
+
+
+residuals(multiple_model)
+
+
+
+
+# ==========================================
+# PART C: GGPLOT2 GRAPHS
+# ==========================================
+
+
+# 1. Scatter Plot
+
+
+ggplot(data, aes(x = Hours, y = Final_Marks)) +
+  geom_point(color = "blue", size = 3) +
+  labs(
+    title = "Study Hours vs Final Marks",
+    x = "Study Hours",
+    y = "Final Marks"
+  ) +
+  theme_minimal()
+
+
+
+
+# 2. Simple Linear Regression Plot
+
+
+ggplot(data, aes(x = Hours, y = Final_Marks)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Simple Linear Regression",
+    x = "Study Hours",
+    y = "Final Marks"
+  ) +
+  theme_minimal()
+
+
+
+
+# 3. Multiple Regression: Actual vs Predicted
+
+
+data$Predicted <- predict(multiple_model)
+
+
+ggplot(data, aes(x = Final_Marks, y = Predicted)) +
+  geom_point(color = "blue", size = 3) +
+  geom_abline(
+    slope = 1,
+    intercept = 0,
+    color = "red"
+  ) +
+  labs(
+    title = "Actual vs Predicted Marks",
+    x = "Actual Marks",
+    y = "Predicted Marks"
+  ) +
+  theme_minimal()
+
+
+
+
+# 4. Residuals vs Fitted Plot
+
+
+data$Fitted <- fitted(multiple_model)
+
+
+data$Residuals <- residuals(multiple_model)
+
+
+ggplot(data, aes(x = Fitted, y = Residuals)) +
+  geom_point(color = "blue", size = 3) +
+  geom_hline(yintercept = 0, color = "red") +
+  labs(
+    title = "Residuals vs Fitted Values",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal()
+
+
+
+
+# 5. Histogram
+
+
+ggplot(data, aes(x = Final_Marks)) +
+  geom_histogram(
+    fill = "skyblue",
+    color = "black",
+    bins = 5
+  ) +
+  labs(
+    title = "Distribution of Final Marks",
+    x = "Final Marks",
+    y = "Frequency"
+  ) +
+  theme_minimal()
+
+
+
+
+# 6. Density Plot
+
+
+ggplot(data, aes(x = Final_Marks)) +
+  geom_density(fill = "lightgreen", alpha = 0.5) +
+  labs(
+    title = "Density Plot of Final Marks",
+    x = "Final Marks",
+    y = "Density"
+  ) +
+  theme_minimal()
+
+
+
+
+# 7. Box Plot
+
+
+ggplot(data, aes(y = Final_Marks)) +
+  geom_boxplot(fill = "orange") +
+  labs(
+    title = "Box Plot of Final Marks",
+    y = "Final Marks"
+  ) +
+  theme_minimal()
+
+
+
+
+# 8. Bar Plot
+
+
+ggplot(data, aes(x = Student, y = Final_Marks)) +
+  geom_col(fill = "steelblue") +
+  labs(
+    title = "Student Final Marks",
+    x = "Student",
+    y = "Final Marks"
+  ) +
+  theme_minimal()
+
+
+
+
+# 9. Line Graph
+
+
+ggplot(data, aes(x = Hours, y = Final_Marks)) +
+  geom_line(color = "blue", linewidth = 1) +
+  geom_point(color = "red", size = 3) +
+  labs(
+    title = "Study Hours vs Final Marks",
+    x = "Study Hours",
+    y = "Final Marks"
+  ) +
+  theme_minimal()
+
+
+
+
+# 10. Normal Q-Q Plot
+
+
+ggplot(data, aes(sample = Residuals)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(
+    title = "Normal Q-Q Plot"
+  ) +
+  theme_minimal()
+
+
+
+
+# ==========================================
+# END OF PROGRAM
+# ==========================================
